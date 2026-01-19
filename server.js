@@ -53,3 +53,34 @@ app.post('/addcard', async(req,res) => {
     }
 });
 
+app.put('/updatecard/:id', async (req, res) => {
+    const { id } = req.params;
+    const { card_name, card_pic } = req.body;
+
+    try {
+        let connection = await mysql.createConnection(dbConfig);
+        await connection.execute(
+            'UPDATE defaultdb.cards SET card_name = ?, card_pic = ? WHERE id = ?',
+            [card_name, card_pic, id]
+        );
+        res.json({ message: 'Card updated successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error - could not update card' });
+    }
+});
+
+
+// Delete Route: Delete a game by IDs
+app.delete('/deletecard/:id', async(req,res) => {
+    const {id} = req.params;
+    try{
+        let connection = await mysql.createConnection(dbConfig)
+        await connection.execute('DELETE FROM defaultdb.card WHERE id = ?', [id]);
+        res.json({message: 'card deleted successfully'});
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({message: 'Server error - could not delete card'});
+    }
+});
