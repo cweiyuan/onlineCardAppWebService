@@ -76,7 +76,7 @@ app.delete('/deletecard/:id', async(req,res) => {
     const {id} = req.params;
     try{
         let connection = await mysql.createConnection(dbConfig)
-        await connection.execute('DELETE FROM defaultdb.card WHERE id = ?', [id]);
+        await connection.execute('DELETE FROM defaultdb.cards WHERE id = ?', [id]);
         res.json({message: 'card deleted successfully'});
     }
     catch (err) {
